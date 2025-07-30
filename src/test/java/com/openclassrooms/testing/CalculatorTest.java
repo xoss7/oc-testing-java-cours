@@ -7,18 +7,18 @@ import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
 
 public class CalculatorTest {
 
@@ -53,6 +53,7 @@ public class CalculatorTest {
 	}
 
 	@Test
+	@Tag("QuatreOpérations")
 	public void testAddTwoPositiveNumbers() {
 		// Arrange
 		int a = 2;
@@ -67,6 +68,7 @@ public class CalculatorTest {
 	}
 
 	@Test
+	@Tag("QuatreOpérations")
 	public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
 		// Arrange
 		int a = 42;
@@ -81,6 +83,7 @@ public class CalculatorTest {
 
 	@ParameterizedTest(name = "{0} x 0 doit être égal à 0")
 	@ValueSource(ints = { 1, 2, 42, 1011, 5089 })
+	@Tag("QuatreOpérations")
 	public void multiply_shouldReturnZero_ofZeroWithMultipleIntegers(int arg) {
 		// Arrange -- Tout est prêt !
 
@@ -93,6 +96,7 @@ public class CalculatorTest {
 
 	@ParameterizedTest(name = "{0} + {1} doit être égal à {2}")
 	@CsvSource({ "1,1,2", "2,3,5", "42,57,99" })
+	@Tag("QuatreOpérations")
 	public void add_shouldReturnTheSum_ofMultipleIntegers(int arg1, int arg2, int expectResult) {
 		// Arrange -- Tout est prêt !
 
@@ -125,8 +129,6 @@ public class CalculatorTest {
 
 		// THEN
 		assertThat(actualDigits).containsExactlyInAnyOrder(9, 5, 8, 7);
-		Set<Integer> expectedDigits = Stream.of(5, 7, 8, 9).collect(Collectors.toSet());
-		assertEquals(expectedDigits, actualDigits);
 	}
 
 	@Test
