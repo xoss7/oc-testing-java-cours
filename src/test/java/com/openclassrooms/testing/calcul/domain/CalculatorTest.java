@@ -32,8 +32,6 @@ public class CalculatorTest {
 	private static Instant startedAt;
 
 	private Calculator calculatorUnderTest;
-	
-	private int cacheFactorial;
 
 	private Logger logger;
 
@@ -177,7 +175,7 @@ public class CalculatorTest {
 		
 		// WHEN
 		// Calculer 12! et sauve la valeur pour un autre test
-		cacheFactorial = calculatorUnderTest.fact(number);
+		int cacheFactorial = calculatorUnderTest.fact(number);
 		
 		// THEN
 		assertThat(cacheFactorial).isEqualTo(12*11*10*9*8*7*6*5*4*3*2);
@@ -190,24 +188,22 @@ public class CalculatorTest {
 		// 12! est mis en cache par le test précédent
 		
 		// WHEN
-		Set<Integer> actualDigits = calculatorUnderTest.digitsSet(cacheFactorial);
+		Set<Integer> actualDigits = calculatorUnderTest.digitsSet(12*11*10*9*8*7*6*5*4*3*2);
 		
 		// THEN
 		assertThat(actualDigits).containsExactlyInAnyOrder(0, 1, 4, 6, 7, 9);
 	}
 	
-	@Test
-	public void multiplyAndDivide_shouldBeIdentity() {
+	@ParameterizedTest(name = "{0} x {1} / {1} should be {0}")
+	@CsvSource({ "2,3,2", "0,1,0", "2323,4232,2323", "123,1,123", "1,232,1" })
+	public void multiplyAndDivide_shouldBeIdentity(int arg1, int arg2, int expected) {
 		// GIVEN
-		Random r = new Random();
-		int a = r.nextInt() % 100;
-		int b = r.nextInt() % 3;
 		
 		// WHEN on multiplie a par b puis on divise par b
-		int c = calculatorUnderTest.divide(calculatorUnderTest.multiply(a, b), b);
+		int actual = calculatorUnderTest.divide(calculatorUnderTest.multiply(arg1, arg2), arg2);
 		
 		// THEN on ré-obtient a
-		assertThat(c).isEqualTo(a);
+		assertThat(actual).isEqualTo(expected);
 	}
 
 }
